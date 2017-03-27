@@ -29,7 +29,7 @@ Once installed, run
 using NIntegration
 ```
 
-and to integrate a function `f(x, y, z)` on hyperrectangle defined by `xmin` and
+and to integrate a function `f(x, y, z)` on the (hyperrectangle)[https://en.wikipedia.org/wiki/Hyperrectangle] defined by `xmin` and
 `xmax`, just call
 
 ```julia
