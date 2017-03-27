@@ -1,10 +1,11 @@
-[![Build Status](https://travis-ci.org/pabloferz/NIntegration.jl.svg?branch=master)](https://travis-ci.org/pabloferz/NIntegration.jl)
-
-[![Coverage Status](https://coveralls.io/repos/pabloferz/NIntegration.jl/badge.svg?branch=master&service=github)](https://coveralls.io/github/pabloferz/NIntegration.jl?branch=master)
-
-[![codecov.io](http://codecov.io/github/pabloferz/NIntegration.jl/coverage.svg?branch=master)](http://codecov.io/github/pabloferz/NIntegration.jl?branch=master)
-
 # NIntegration.jl
+
+
+| **Build Status**                          | **Code Coverage**                              |
+|:-----------------------------------------:|:----------------------------------------------:|
+| [![Build Status][travis-img]][travis-url] | [![Coverage Status][coveral-img]][coveral-url] |
+| [![Build Status][appvey-img]][appvey-url] | [![Coverage Status][codecov-img]][codecov-url] |
+
 
 This is library intended to provided multidimensional numerical integration
 routines in pure [Julia](http://julialang.org)
@@ -13,9 +14,15 @@ routines in pure [Julia](http://julialang.org)
 
 For the time being this library can only perform integrals in three dimensions.
 
+**TODO**
+
+ [ ] Add rules for other dimensions
+ [ ] Parallelize
+
 ## Installation
 
-`NIntegration.jl` should work on Julia 0.5 and later versions and can be installed from a Julia session by running
+`NIntegration.jl` should work on Julia 0.5 and later versions and can be
+installed from a Julia session by running
 
 ```julia
 julia> Pkg.clone("https://github.com/pabloferz/NIntegration.jl.git")
@@ -29,8 +36,9 @@ Once installed, run
 using NIntegration
 ```
 
-and to integrate a function `f(x, y, z)` on the (hyperrectangle)[https://en.wikipedia.org/wiki/Hyperrectangle] defined by `xmin` and
-`xmax`, just call
+To integrate a function `f(x, y, z)` on the
+[hyperrectangle](https://en.wikipedia.org/wiki/Hyperrectangle) defined by
+`xmin` and `xmax`, just call
 
 ```julia
 nintegrate(f::Function, xmin::NTuple{N}, xmax::NTuple{N};
@@ -55,12 +63,31 @@ I₁ = nintegrate(f₁, R)
 
 The integration algorithm is based on the one decribed in:
 
- * J. Berntsen, T. O. Espelid, and A. Genz, "An Adaptive Algorithm for the Approximate Calculation of Multiple Integrals," *ACM Trans. Math. Soft.*, 17 (4), 437-451 (1991).
+ * J. Berntsen, T. O. Espelid, and A. Genz, "An Adaptive Algorithm for the
+   Approximate Calculation of Multiple Integrals," *ACM Trans. Math. Soft.*, 17
+   (4), 437-451 (1991).
 
 ## Author
 
  * [Pablo Zubieta](https://github.com/pabloferz)
- 
+
 ## Acknowdlegments
 
-The author expresses his gratitude to [Professor Alan Genz](http://www.math.wsu.edu/faculty/genz/homepage) for some useful pointers.
+The author expresses his gratitude to [Professor Alan
+Genz](http://www.math.wsu.edu/faculty/genz/homepage) for some useful pointers.
+
+
+
+[//]: # (Links)
+
+[travis-img]: https://travis-ci.org/pabloferz/NIntegration.jl.svg?branch=master
+[travis-url]: https://travis-ci.org/pabloferz/NIntegration.jl
+
+[appvey-img]: https://ci.appveyor.com/api/projects/status/a2ot9sej796hernj?svg=true
+[appvey-url]: https://ci.appveyor.com/project/pabloferz/nintegration-jl
+
+[coveral-img]: https://coveralls.io/repos/pabloferz/NIntegration.jl/badge.svg?branch=master&service=github
+[coveral-url]: https://coveralls.io/github/pabloferz/NIntegration.jl?branch=master
+
+[codecov-img]: http://codecov.io/github/pabloferz/NIntegration.jl/coverage.svg?branch=master
+[codecov-url]: http://codecov.io/github/pabloferz/NIntegration.jl?branch=master
