@@ -5,9 +5,9 @@ os:
   - osx
 
 julia:
-  - nightly
+  - 0.5
   - release
-  - 0.4.5
+  - nightly
 
 matrix:
   allow_failures:
@@ -17,9 +17,11 @@ notifications:
   email: false
 
 script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
+  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
   - julia -e 'Pkg.clone(pwd())'
-  - julia -e 'Pkg.test("PkgName", coverage=true)'
+  - julia -e 'Pkg.add("DataStructures")'
+  - julia -e 'Pkg.add("StaticArrays")'
+  - julia -e 'Pkg.test("NIntegration", coverage=true)'
 
 #after_success:
 #  - julia -e julia -e 'Pkg.add("Documenter")'
