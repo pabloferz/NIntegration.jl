@@ -1,11 +1,10 @@
-# NIntegration.jl
-
-
 | **Build Status**                          | **Code Coverage**                              |
 |:-----------------------------------------:|:----------------------------------------------:|
 | [![Build Status][travis-img]][travis-url] | [![Coverage Status][coveral-img]][coveral-url] |
 | [![Build Status][appvey-img]][appvey-url] | [![Coverage Status][codecov-img]][codecov-url] |
 
+
+# NIntegration.jl
 
 This is library intended to provided multidimensional numerical integration
 routines in pure [Julia](http://julialang.org)
@@ -16,8 +15,8 @@ For the time being this library can only perform integrals in three dimensions.
 
 **TODO**
 
- [ ] Add rules for other dimensions
- [ ] Parallelize
+- [ ] Add rules for other dimensions
+- [ ] Parallelize
 
 ## Installation
 
