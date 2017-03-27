@@ -54,3 +54,12 @@ let xmin = (0.0, 0.0, 0.0)
     @test nintegrate((x,y,z)->x^2*y^2*z^2, xmin, xmax)[1] ≈ 1/27
 
 end
+
+let f = (x, y, z) -> x * sin(2y) * cos(3z)
+
+    xmin = (0.0, 0.0, 0.0)
+    xmax = (1.0, 1.0, 1.0)
+
+    (I, E, n, R) = nintegrate(f, xmin, xmax)
+    @test I == nintegrate(f, R)
+end
