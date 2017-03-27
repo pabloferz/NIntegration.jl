@@ -1,5 +1,10 @@
+#!/usr/bin/env julia
+
+### Test suite for NIntegration.jl
+
 using NIntegration
 using Base.Test
 
-# write your own tests here
-@test 1 == 2
+### Tests
+
+@time @testset "Integration" begin include("integration.jl") end

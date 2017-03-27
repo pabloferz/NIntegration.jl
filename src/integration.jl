@@ -1,4 +1,4 @@
-"""    nintegrate(f, xmin, xmax;
+"""    nintegrate(f, xmin::NTuple{N}, xmax::NTuple{N};
                reltol = 1e-6, abstol = 1e-12,
                maxevals = 1000000)
 
@@ -15,7 +15,7 @@ Returns a tuple of the approximated integral, error estimate, number of
 functions evaluations and an object of type `Regions` (a set of subregions in
 which the integration domain was subdivided).
 
-[^BEG1991]: J. Berntsen, T. O. Espelid, A. Genz, "An Adaptive Algorithm for the Approximate Calculation of Multiple Integrals," ACM Trans. Math. Soft. 17 (4), 437-451 (1991).
+[^BEG1991]: J. Berntsen, T. O. Espelid, A. Genz, "An Adaptive Algorithm for the Approximate Calculation of Multiple Integrals," ACM Trans. Math. Soft., 17 (4), 437-451 (1991).
 """
 function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
                          reltol::Float64 = 1e-6, abstol::Float64 = eps(),
