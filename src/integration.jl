@@ -29,7 +29,8 @@ function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
 
     # apply the integration rule to the whole domain
     # and initiate the regions heap
-    I, E = apply_rule!(f, r)
+    P = zeros(MMatrix{2,3})
+    I, E = apply_rule!(f, r, P)
     regions = binary_maxheap(typeof(r))
     push!(regions, r)
     evals = L = L₁₁
@@ -38,8 +39,8 @@ function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
     while evals < maxevals && E > abs(I) * reltol && E > abstol
         r = pop!(regions)
         r₁, r₂ = divide(r)
-        I₁, E₁ = apply_rule!(f, r₁)
-        I₂, E₂ = apply_rule!(f, r₂)
+        I₁, E₁ = apply_rule!(f, r₁, P)
+        I₂, E₂ = apply_rule!(f, r₂, P)
         ΔI, ΔE = error_estimates!(r₁, r₂, r, I₁, I₂, E₁, E₂)
 
         push!(regions, r₁)
@@ -60,9 +61,10 @@ Approximate numerical integration routine that takes the integrand `f` and a
 """
 nintegrate{F}(f::F, regions::Regions) = nintegrate(f, regions.v)
 function nintegrate{F,N,T,R}(f::F, regions::Vector{Region{N,T,R}})
-    I = zero(T)
+    P = zeros(MMatrix{2,3})
+    I = zero(R)
     for r in regions
-        I += apply_rule(f, r)
+        I += apply_rule(f, r, P)
     end
     return I
 end
@@ -77,8 +79,8 @@ function divide(r::Region)
     return r₁, r₂
 end
 
-function apply_rule!{F}(f::F, r::Region)
-    I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂ = _apply_rule(f, r)
+function apply_rule!{F}(f::F, r::Region, P)
+    I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂ = _apply_rule(f, r, P)
     r.axis.x = choose_axis(r.h, fu, fuα₁, fuα₂)
     E = compute_error(N₁, N₂, N₃, N₄)
     V = prod(r.h)
@@ -87,9 +89,7 @@ function apply_rule!{F}(f::F, r::Region)
     return I, E
 end
 
-const P = zeros(MMatrix{2,3})
-
-@inline function _apply_rule{F,T,R}(f::F, r::Region{3,T,R})
+@inline function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P)
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
@@ -239,7 +239,7 @@ const P = zeros(MMatrix{2,3})
     return I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂
 end
 
-function apply_rule{F,T,R}(f::F, r::Region{3,T,R})
+function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P)
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 

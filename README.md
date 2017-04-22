@@ -16,6 +16,7 @@ For the time being this library can only perform integrals in three dimensions.
 **TODO**
 
 - [ ] Add rules for other dimensions
+- [ ] Make sure it works properly with complex valued functions
 - [ ] Parallelize
 
 ## Installation
