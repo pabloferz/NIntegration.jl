@@ -18,6 +18,7 @@ For the time being this library can only perform integrals in three dimensions.
 - [ ] Add rules for other dimensions
 - [ ] Make sure it works properly with complex valued functions
 - [ ] Parallelize
+- [ ] Improve the error estimates (the [Cuba library](http://www.feynarts.de/cuba/) and consequently [Cuba.jl](https://github.com/giordano/Cuba.jl) seem to calculate tighter errors)
 
 ## Installation
 
