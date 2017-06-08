@@ -1,17 +1,8 @@
-if VERSION < v"0.6.0-dev.2618"
-    type Box{T}
-        x::T
+type Box{T}
+    x::T
 
-        Box() = new()
-        Box(x) = new(x)
-    end
-else
-    @compat mutable struct Box{T}
-        x::T
-
-        Box{T}() where {T} = new()
-        Box{T}(x::T) where {T} = new(x)
-    end
+    Box() = new()
+    Box(x) = new(x)
 end
 (::Type{Box}){T}(x::T) = Box{T}(x)
 
