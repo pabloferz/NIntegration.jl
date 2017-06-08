@@ -4,6 +4,7 @@ module NIntegration
 
 
 ### Dependencies
+using Compat
 using DataStructures
 using StaticArrays
 

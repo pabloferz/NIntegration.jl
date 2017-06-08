@@ -1,12 +1,21 @@
-type Box{T}
-    x::T
+if VERSION < v"0.6.0-dev.2618"
+    type Box{T}
+        x::T
 
-    Box() = new()
-    Box(x) = new(x)
+        Box() = new()
+        Box(x) = new(x)
+    end
+else
+    @compat mutable struct Box{T}
+        x::T
+
+        Box{T}() where {T} = new()
+        Box{T}(x::T) where {T} = new(x)
+    end
 end
 (::Type{Box}){T}(x::T) = Box{T}(x)
 
-immutable Region{N,T<:AbstractFloat,R}
+@compat struct Region{N,T<:AbstractFloat,R}
     x::MVector{N,T} # center
     h::MVector{N,T} # half-width
     I::Box{R}
@@ -24,7 +33,7 @@ Base.isequal{N}(r₁::Region{N}, r₂::Region{N}) = isequal(r₁.E.x, r₂.E.x)
 
 Base.show(io::IO, r::Region) = print(io, '(', r.x, ", ", r.h, ')')
 
-immutable Regions{R<:Region}
+@compat struct Regions{R<:Region}
     v::Vector{R}
 end
 
