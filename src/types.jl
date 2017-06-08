@@ -6,7 +6,7 @@ type Box{T}
 end
 (::Type{Box}){T}(x::T) = Box{T}(x)
 
-@compat struct Region{N,T<:AbstractFloat,R}
+immutable Region{N,T<:AbstractFloat,R}
     x::MVector{N,T} # center
     h::MVector{N,T} # half-width
     I::Box{R}
@@ -24,7 +24,7 @@ Base.isequal{N}(r₁::Region{N}, r₂::Region{N}) = isequal(r₁.E.x, r₂.E.x)
 
 Base.show(io::IO, r::Region) = print(io, '(', r.x, ", ", r.h, ')')
 
-@compat struct Regions{R<:Region}
+immutable Regions{R<:Region}
     v::Vector{R}
 end
 
