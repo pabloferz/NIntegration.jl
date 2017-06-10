@@ -1,7 +1,8 @@
+# Equivalent to `integral_type(f, x) = typeof(p₀[1] * f(x...)` but inferrable
 for N = 1:4
     @eval function integral_type(f, x::NTuple{$N})
         Base.Cartesian.@nexprs $N d->(x_d = x[d])
-        typeof(p₀[1] * Base.Cartesian.@ncall($N, f, x))
+        return typeof(p₀[1] * Base.Cartesian.@ncall($N, f, x))
     end
 end
 

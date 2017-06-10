@@ -14,9 +14,10 @@ include(joinpath(path, "rules.jl"))
 include(joinpath(path, "utils.jl"))
 include(joinpath(path, "types.jl"))
 include(joinpath(path, "integration.jl"))
+include(joinpath(path, "3d.jl"))
 
 ### Exports
-export nintegrate
+export nintegrate, weightedpoints
 
 
 end # module
