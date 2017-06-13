@@ -66,6 +66,6 @@ let f = (x, y, z) -> x * sin(2y) * cos(3z)
     W = weightedpoints(R)
     @test I ≈ nintegrate(f, W)
 
-    W = weightedpoints(NIntegration.WPoint, R)
+    W = weightedpoints(NIntegration.idem, R)
     @test I ≈ nintegrate(f, W)
 end

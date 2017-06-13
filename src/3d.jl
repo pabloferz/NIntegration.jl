@@ -1,4 +1,4 @@
-function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
+function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
@@ -14,12 +14,12 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
     w, w₁, w₂, w₃, w₄ = wa[1]
 
     uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-    P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-    P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+    p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+    p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-    fuα₁ = ( f(P[1], x₂, x₃) + f(P[2], x₂, x₃) ,
-             f(x₁, P[3], x₃) + f(x₁, P[4], x₃) ,
-             f(x₁, x₂, P[5]) + f(x₁, x₂, P[6]) )
+    fuα₁ = ( f(p[1], x₂, x₃) + f(p[2], x₂, x₃) ,
+             f(x₁, p[3], x₃) + f(x₁, p[4], x₃) ,
+             f(x₁, x₂, p[5]) + f(x₁, x₂, p[6]) )
 
     s = fuα₁[1] + fuα₁[2] + fuα₁[3]
 
@@ -33,12 +33,12 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
     w, w₁, w₂, w₃, w₄ = wa[2]
 
     uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-    P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-    P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+    p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+    p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-    fuα₂ = ( f(P[1], x₂, x₃) + f(P[2], x₂, x₃) ,
-             f(x₁, P[3], x₃) + f(x₁, P[4], x₃) ,
-             f(x₁, x₂, P[5]) + f(x₁, x₂, P[6]) )
+    fuα₂ = ( f(p[1], x₂, x₃) + f(p[2], x₂, x₃) ,
+             f(x₁, p[3], x₃) + f(x₁, p[4], x₃) ,
+             f(x₁, x₂, p[5]) + f(x₁, x₂, p[6]) )
 
     s = fuα₂[1] + fuα₂[2] + fuα₂[3]
 
@@ -53,11 +53,11 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         w, w₁, w₂, w₃, w₄ = wa[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        s = f(P[1], x₂, x₃) + f(x₁, P[3], x₃) + f(x₁, x₂, P[5]) +
-            f(P[2], x₂, x₃) + f(x₁, P[4], x₃) + f(x₁, x₂, P[6])
+        s = f(p[1], x₂, x₃) + f(x₁, p[3], x₃) + f(x₁, x₂, p[5]) +
+            f(p[2], x₂, x₃) + f(x₁, p[4], x₃) + f(x₁, x₂, p[6])
 
         I += w * s
         N₁ += w₁ * s
@@ -72,13 +72,13 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         w, w₁, w₂, w₃, w₄ = wb[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        s = f(P[1], P[3], x₃) + f(P[1], x₂, P[5]) + f(x₁, P[3], P[5]) +
-            f(P[1], P[4], x₃) + f(P[1], x₂, P[6]) + f(x₁, P[3], P[6]) +
-            f(P[2], P[3], x₃) + f(P[2], x₂, P[5]) + f(x₁, P[4], P[5]) +
-            f(P[2], P[4], x₃) + f(P[2], x₂, P[6]) + f(x₁, P[4], P[6])
+        s = f(p[1], p[3], x₃) + f(p[1], x₂, p[5]) + f(x₁, p[3], p[5]) +
+            f(p[1], p[4], x₃) + f(p[1], x₂, p[6]) + f(x₁, p[3], p[6]) +
+            f(p[2], p[3], x₃) + f(p[2], x₂, p[5]) + f(x₁, p[4], p[5]) +
+            f(p[2], p[4], x₃) + f(p[2], x₂, p[6]) + f(x₁, p[4], p[6])
 
         I += w * s
         N₁ += w₁ * s
@@ -93,12 +93,12 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         w, w₁, w₂, w₃, w₄ = wd[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         s = zero(R)
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         I += w * s
@@ -114,28 +114,28 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         w, w₁, w₂, w₃, w₄ = we[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, v * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         s = zero(R)
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         uh₂, uh₃ = v * h₂, u * h₃
-        P[3], P[5] = x₂ + uh₂, x₃ + uh₃
-        P[4], P[6] = x₂ - uh₂, x₃ - uh₃
+        p[3], p[5] = x₂ + uh₂, x₃ + uh₃
+        p[4], p[6] = x₂ - uh₂, x₃ - uh₃
 
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         uh₁, uh₂ = v * h₁, u * h₂
-        P[1], P[3] = x₁ + uh₁, x₂ + uh₂
-        P[2], P[4] = x₁ - uh₁, x₂ - uh₂
+        p[1], p[3] = x₁ + uh₁, x₂ + uh₂
+        p[2], p[4] = x₁ - uh₁, x₂ - uh₂
 
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         I += w * s
@@ -148,7 +148,7 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
     return I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂
 end
 
-function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
+function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
@@ -160,11 +160,11 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         u = α[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        s = f(P[1], x₂, x₃) + f(x₁, P[3], x₃) + f(x₁, x₂, P[5]) +
-            f(P[2], x₂, x₃) + f(x₁, P[4], x₃) + f(x₁, x₂, P[6])
+        s = f(p[1], x₂, x₃) + f(x₁, p[3], x₃) + f(x₁, x₂, p[5]) +
+            f(p[2], x₂, x₃) + f(x₁, p[4], x₃) + f(x₁, x₂, p[6])
 
         I += wa[i][1] * s
     end
@@ -174,13 +174,13 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         u = β[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        s = f(P[1], P[3], x₃) + f(P[1], x₂, P[5]) + f(x₁, P[3], P[5]) +
-            f(P[1], P[4], x₃) + f(P[1], x₂, P[6]) + f(x₁, P[3], P[6]) +
-            f(P[2], P[3], x₃) + f(P[2], x₂, P[5]) + f(x₁, P[4], P[5]) +
-            f(P[2], P[4], x₃) + f(P[2], x₂, P[6]) + f(x₁, P[4], P[6])
+        s = f(p[1], p[3], x₃) + f(p[1], x₂, p[5]) + f(x₁, p[3], p[5]) +
+            f(p[1], p[4], x₃) + f(p[1], x₂, p[6]) + f(x₁, p[3], p[6]) +
+            f(p[2], p[3], x₃) + f(p[2], x₂, p[5]) + f(x₁, p[4], p[5]) +
+            f(p[2], p[4], x₃) + f(p[2], x₂, p[6]) + f(x₁, p[4], p[6])
 
         I += wb[i][1] * s
     end
@@ -190,12 +190,12 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         u = ɛ[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         s = zero(R)
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         I += wd[i][1] * s
@@ -206,28 +206,28 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
         u, v = ζ[i], η[i]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, v * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         s = zero(R)
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         uh₂, uh₃ = v * h₂, u * h₃
-        P[3], P[5] = x₂ + uh₂, x₃ + uh₃
-        P[4], P[6] = x₂ - uh₂, x₃ - uh₃
+        p[3], p[5] = x₂ + uh₂, x₃ + uh₃
+        p[4], p[6] = x₂ - uh₂, x₃ - uh₃
 
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         uh₁, uh₂ = v * h₁, u * h₂
-        P[1], P[3] = x₁ + uh₁, x₂ + uh₂
-        P[2], P[4] = x₁ - uh₁, x₂ - uh₂
+        p[1], p[3] = x₁ + uh₁, x₂ + uh₂
+        p[2], p[4] = x₁ - uh₁, x₂ - uh₂
 
         for l = 1:2, m = 1:2, n = 1:2
-            s += f(P[l, 1], P[m, 2], P[n, 3])
+            s += f(p[l, 1], p[m, 2], p[n, 3])
         end
 
         I += we[i][1] * s
@@ -236,92 +236,96 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, P::MMatrix{2,3})
     return I * (h₁ * h₂ * h₃)
 end
 
-function weightedpoints!{F,T,R}(f::F, W::Vector{WPoint{3,T}},
-                                r::Region{3,T,R}, P::MMatrix{2,3})
+function weightedpoints!{F,T,R}(f::F, wp::WPoints{3,T},
+                                r::Region{3,T,R}, p::MMatrix{2,3})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
     V = h₁ * h₂ * h₃
 
-    push!(W, f(V * p₀[1], (x₁, x₂, x₃)))
+    push!(wp, f(V * p₀[1], SVector(x₁, x₂, x₃)))
 
     # points generated by (αᵢ, 0, 0, 0, ...)
     @inbounds for i = 1:length(α)
         u = α[i]
+        wᵢ = V * wa[i][1]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        push!(W, f(V * wa[i][1], (P[1], x₂, x₃)))
-        push!(W, f(V * wa[i][1], (P[2], x₂, x₃)))
-        push!(W, f(V * wa[i][1], (x₁, P[3], x₃)))
-        push!(W, f(V * wa[i][1], (x₁, P[4], x₃)))
-        push!(W, f(V * wa[i][1], (x₁, x₂, P[5])))
-        push!(W, f(V * wa[i][1], (x₁, x₂, P[6])))
+        push!(wp, f(wᵢ, SVector(p[1], x₂, x₃)))
+        push!(wp, f(wᵢ, SVector(p[2], x₂, x₃)))
+        push!(wp, f(wᵢ, SVector(x₁, p[3], x₃)))
+        push!(wp, f(wᵢ, SVector(x₁, p[4], x₃)))
+        push!(wp, f(wᵢ, SVector(x₁, x₂, p[5])))
+        push!(wp, f(wᵢ, SVector(x₁, x₂, p[6])))
     end
 
     # points generated by (βᵢ, βᵢ, 0, 0, ...)
     @inbounds for i = 1:length(β)
         u = β[i]
+        wᵢ = V * wb[i][1]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-        push!(W, f(V * wb[i][1], (P[1], P[3], x₃)))
-        push!(W, f(V * wb[i][1], (P[1], P[4], x₃)))
-        push!(W, f(V * wb[i][1], (P[2], P[3], x₃)))
-        push!(W, f(V * wb[i][1], (P[2], P[4], x₃)))
-        push!(W, f(V * wb[i][1], (P[1], x₂, P[5])))
-        push!(W, f(V * wb[i][1], (P[1], x₂, P[6])))
-        push!(W, f(V * wb[i][1], (P[2], x₂, P[5])))
-        push!(W, f(V * wb[i][1], (P[2], x₂, P[6])))
-        push!(W, f(V * wb[i][1], (x₁, P[3], P[5])))
-        push!(W, f(V * wb[i][1], (x₁, P[3], P[6])))
-        push!(W, f(V * wb[i][1], (x₁, P[4], P[5])))
-        push!(W, f(V * wb[i][1], (x₁, P[4], P[6])))
+        push!(wp, f(wᵢ, SVector(p[1], p[3], x₃)))
+        push!(wp, f(wᵢ, SVector(p[1], p[4], x₃)))
+        push!(wp, f(wᵢ, SVector(p[2], p[3], x₃)))
+        push!(wp, f(wᵢ, SVector(p[2], p[4], x₃)))
+        push!(wp, f(wᵢ, SVector(p[1], x₂, p[5])))
+        push!(wp, f(wᵢ, SVector(p[1], x₂, p[6])))
+        push!(wp, f(wᵢ, SVector(p[2], x₂, p[5])))
+        push!(wp, f(wᵢ, SVector(p[2], x₂, p[6])))
+        push!(wp, f(wᵢ, SVector(x₁, p[3], p[5])))
+        push!(wp, f(wᵢ, SVector(x₁, p[3], p[6])))
+        push!(wp, f(wᵢ, SVector(x₁, p[4], p[5])))
+        push!(wp, f(wᵢ, SVector(x₁, p[4], p[6])))
     end
 
     # points generated by (ɛᵢ, ɛᵢ, ɛᵢ, 0, ...)
     @inbounds for i = 1:length(ɛ)
         u = ɛ[i]
+        wᵢ = V * wd[i][1]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, u * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         for l = 1:2, m = 1:2, n = 1:2
-            push!(W, f(V * wd[i][1], (P[l, 1], P[m, 2], P[n, 3])))
+            push!(wp, f(wᵢ, SVector(p[l, 1], p[m, 2], p[n, 3])))
         end
     end
 
     # points generated by (ζᵢ, ζᵢ, ηᵢ, 0, ...)
     @inbounds for i = 1:length(ζ)
         u, v = ζ[i], η[i]
+        wᵢ = V * we[i][1]
 
         uh₁, uh₂, uh₃ = u * h₁, u * h₂, v * h₃
-        P[1], P[3], P[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
-        P[2], P[4], P[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
+        p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
+        p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
         for l = 1:2, m = 1:2, n = 1:2
-            push!(W, f(V * we[i][1], (P[l, 1], P[m, 2], P[n, 3])))
+            push!(wp, f(wᵢ, SVector(p[l, 1], p[m, 2], p[n, 3])))
         end
 
         uh₂, uh₃ = v * h₂, u * h₃
-        P[3], P[5] = x₂ + uh₂, x₃ + uh₃
-        P[4], P[6] = x₂ - uh₂, x₃ - uh₃
+        p[3], p[5] = x₂ + uh₂, x₃ + uh₃
+        p[4], p[6] = x₂ - uh₂, x₃ - uh₃
 
         for l = 1:2, m = 1:2, n = 1:2
-            push!(W, f(V * we[i][1], (P[l, 1], P[m, 2], P[n, 3])))
+            push!(wp, f(wᵢ, SVector(p[l, 1], p[m, 2], p[n, 3])))
         end
 
         uh₁, uh₂ = v * h₁, u * h₂
-        P[1], P[3] = x₁ + uh₁, x₂ + uh₂
-        P[2], P[4] = x₁ - uh₁, x₂ - uh₂
+        p[1], p[3] = x₁ + uh₁, x₂ + uh₂
+        p[2], p[4] = x₁ - uh₁, x₂ - uh₂
 
         for l = 1:2, m = 1:2, n = 1:2
-            push!(W, f(V * we[i][1], (P[l, 1], P[m, 2], P[n, 3])))
+            push!(wp, f(wᵢ, SVector(p[l, 1], p[m, 2], p[n, 3])))
         end
     end
 

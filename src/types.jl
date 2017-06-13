@@ -36,18 +36,7 @@ Base.show(io::IO, m::MIME"text/plain", r::Regions) = show(io, m, r.v)
 Base.show(io::IO, r::Regions) =
     (n = length(r.v); print(io, n, " subregion", n == 1 ? "" : "s"))
 
-immutable WPoint{N,T}
-    w::T
-    x::SVector{N,T}
-end
-
-for N = 1:4
-    @eval (::Type{WPoint}){T}(w::T, x::NTuple{$N,T}) =
-        WPoint{$N,T}(w, SVector(x))
-
-    # Equivalent to `eval(f, wp) = wp.w * f(wp.p...)`, but faster
-    @eval function eval{F,T}(f::F, wp::WPoint{$N,T})
-        Base.Cartesian.@nexprs $N d->(x_d = wp.x[d])
-        return wp.w * Base.Cartesian.@ncall($N, f, x)
-    end
+immutable WPoints{N,T}
+    w::Vector{T}
+    p::Vector{SVector{N,T}}
 end

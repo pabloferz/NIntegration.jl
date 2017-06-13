@@ -31,8 +31,8 @@ function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
 
     # apply the integration rule to the whole domain
     # and initiate the regions heap
-    P = zeros(MMatrix{2,N})
-    I, E = apply_rule!(f, r, P)
+    _p = zeros(MMatrix{2,N})
+    I, E = apply_rule!(f, r, _p)
     regions = binary_maxheap(typeof(r))
     push!(regions, r)
     evals = L = L₁₁
@@ -41,8 +41,8 @@ function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
     while evals < maxevals && E > abs(I) * reltol && E > abstol
         r = pop!(regions)
         r₁, r₂ = divide(r)
-        I₁, E₁ = apply_rule!(f, r₁, P)
-        I₂, E₂ = apply_rule!(f, r₂, P)
+        I₁, E₁ = apply_rule!(f, r₁, _p)
+        I₂, E₂ = apply_rule!(f, r₂, _p)
         ΔI, ΔE = error_estimates!(r₁, r₂, r, I₁, I₂, E₁, E₂)
 
         push!(regions, r₁)
@@ -63,10 +63,10 @@ Approximate numerical integration routine that takes the integrand `f` and a
 """
 nintegrate{F}(f::F, regions::Regions) = nintegrate(f, regions.v)
 function nintegrate{F,N,T,R}(f::F, regions::Vector{Region{N,T,R}})
-    P = zeros(MMatrix{2,N})
-    I = zero(R)
+    _p = zeros(MMatrix{2,N})
+    I  = zero(R)
     for r in regions
-        I += apply_rule(f, r, P)
+        I += apply_rule(f, r, _p)
     end
     return I
 end
@@ -74,49 +74,47 @@ end
 """    nintegrate{T<:WPoint}(f, W::Vector{T})
 
 Approximate numerical integration routine that takes the integrand `f` and a
-`Vector` of `WPoint`s on the integration domain. A `Vector` of `WPoint`s can be
-obtained from a `Regions` object `R` by calling `weightedpoints(R)`.
+`WPoints` object (set of  weights and nodes on integration domain). A `WPoints`
+can be obtained from a `Regions` object `R` by calling `weightedpoints(R)`.
 """
-function nintegrate{F,N,T}(f::F, W::Vector{WPoint{N,T}})
-    isempty(W) && throw(ArgumentError("W must contain at least one element"))
+function nintegrate{F,N,T}(f::F, wp::WPoints{N,T})
+    w = weights(wp)
+    p = points(wp)
 
-    I = eval(f, W[1])
-    @inbounds @simd for i = 2:length(W)
-        I += eval(f, W[i])
+    isempty(w) && throw(ArgumentError("W must contain at least one element"))
+
+    I = w[1] * eval(f, p[1])
+    @inbounds @simd for i = 2:length(w)
+        I += w[i] * eval(f, p[i])
     end
+
     return I
 end
 
 """    weightedpoints(regions::Regions)
 
-Build a `Vector` of `WPoint`s (`W`) from a `Regions` object `regions`.  The
-resulting vector can be used to approximate de integral of a function `f` by
-calling `nintegrate(f, W)`
+Build a `WPoints` (`W`) from a `Regions` object `regions`.  The resulting
+object can be used to approximate de integral of a function `f` by calling
+`nintegrate(f, W)`
 """
-weightedpoints(regions::Regions) = weightedpoints(regions.v)
-function weightedpoints{N,T,R}(regions::Vector{Region{N,T,R}})
-    P = zeros(MMatrix{2,N})
-    W = Vector{WPoint{N,T}}()
-    for r in regions
-        weightedpoints!(WPoint, W, r, P)
-    end
-    return W
-end
+weightedpoints(regions::Regions) = weightedpoints(idem, regions.v)
 
 """    weightedpoints(f, regions::Regions)
 
 It works the same as `weightedpoints(::Regions)`, but allows a transformation
 `f` that takes a weight and a tuple `x` of point coordinates f(w, p) and
-returns a WPoint.
+returns a `WPoints`.
 """
 weightedpoints{F}(f::F, regions::Regions) = weightedpoints(f, regions.v)
 function weightedpoints{F,N,T,R}(f::F, regions::Vector{Region{N,T,R}})
-    P = zeros(MMatrix{2,N})
-    W = Vector{WPoint{N,T}}()
+    _p = zeros(MMatrix{2,N})
+    w = Vector{T}()
+    p = Vector{SVector{N,T}}()
+    wp = WPoints(w, p)
     for r in regions
-        weightedpoints!(f, W, r, P)
+        weightedpoints!(f, wp, r, _p)
     end
-    return W
+    return wp
 end
 
 function divide(r::Region)
