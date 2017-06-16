@@ -31,7 +31,7 @@ function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
 
     # apply the integration rule to the whole domain
     # and initiate the regions heap
-    _p = zeros(MMatrix{2,N})
+    _p = zeros(MMatrix{2,N,T})
     I, E = apply_rule!(f, r, _p)
     regions = binary_maxheap(typeof(r))
     push!(regions, r)
@@ -62,8 +62,8 @@ Approximate numerical integration routine that takes the integrand `f` and a
 `Regions` object which is a subdivision of the integration domain.
 """
 nintegrate{F}(f::F, regions::Regions) = nintegrate(f, regions.v)
-function nintegrate{F,N,T,R}(f::F, regions::Vector{Region{N,T,R}})
-    _p = zeros(MMatrix{2,N})
+function nintegrate{F,N,R,T}(f::F, regions::Vector{Region{N,T,R}})
+    _p = zeros(MMatrix{2,N,T})
     I  = zero(R)
     for r in regions
         I += apply_rule(f, r, _p)
@@ -106,9 +106,9 @@ It works the same as `weightedpoints(::Regions)`, but allows a transformation
 returns a `WPoints`.
 """
 weightedpoints{F}(f::F, regions::Regions) = weightedpoints(f, regions.v)
-function weightedpoints{F,N,T,R}(f::F, regions::Vector{Region{N,T,R}})
-    _p = zeros(MMatrix{2,N})
-    w = Vector{T}()
+function weightedpoints{F,N,R,T}(f::F, regions::Vector{Region{N,T,R}})
+    _p = zeros(MMatrix{2,N,T})
+    w = Vector{R}()
     p = Vector{SVector{N,T}}()
     wp = WPoints(w, p)
     for r in regions

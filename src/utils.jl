@@ -1,6 +1,6 @@
 for N = 1:4
     # Equivalent to `integral_type(f, x) = typeof(p₀[1] * f(x...)` but inferrable
-    @eval function integral_type(f, x::NTuple{$N})
+    @eval function integral_type{T}(f, x::NTuple{$N,T})
         Base.Cartesian.@nexprs $N d->(x_d = x[d])
         return typeof(p₀[1] * Base.Cartesian.@ncall($N, f, x))
     end
@@ -12,7 +12,7 @@ for N = 1:4
     end
 end
 
-function Base.push!{N,T}(wp::WPoints{N,T}, t::Tuple{T,SVector{N,T}})
+function Base.push!{N,T,R}(wp::WPoints{N,T,R}, t::Tuple{R,SVector{N,T}})
     push!(wp.w, t[1])
     push!(wp.p, t[2])
 end

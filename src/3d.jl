@@ -1,4 +1,4 @@
-function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
+function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3,T})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
@@ -148,7 +148,7 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
     return I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂
 end
 
-function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
+function apply_rule{F,R,T}(f::F, r::Region{3,T,R}, p::MMatrix{2,3,T})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 
@@ -236,8 +236,8 @@ function apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3})
     return I * (h₁ * h₂ * h₃)
 end
 
-function weightedpoints!{F,T,R}(f::F, wp::WPoints{3,T},
-                                r::Region{3,T,R}, p::MMatrix{2,3})
+function weightedpoints!{F,R,T}(f::F, wp::WPoints{3,T,R},
+                                r::Region{3,T,R}, p::MMatrix{2,3,T})
     x₁, x₂, x₃ = r.x
     h₁, h₂, h₃ = r.h
 

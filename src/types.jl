@@ -36,7 +36,7 @@ Base.show(io::IO, m::MIME"text/plain", r::Regions) = show(io, m, r.v)
 Base.show(io::IO, r::Regions) =
     (n = length(r.v); print(io, n, " subregion", n == 1 ? "" : "s"))
 
-immutable WPoints{N,T}
-    w::Vector{T}
+immutable WPoints{N,T,R}
+    w::Vector{R}
     p::Vector{SVector{N,T}}
 end
