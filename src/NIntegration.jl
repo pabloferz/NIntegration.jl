@@ -10,7 +10,11 @@ using StaticArrays
 
 ### Implementation
 path = dirname(realpath(@__FILE__)) # works even for symlinks
-include(joinpath(path, "types.jl"))
+if VERSION < v"0.6.0"
+    include(joinpath(path, "types-0.5.jl"))
+else
+    include(joinpath(path, "types.jl"))
+end
 include(joinpath(path, "rules.jl"))
 include(joinpath(path, "utils.jl"))
 include(joinpath(path, "integration.jl"))
