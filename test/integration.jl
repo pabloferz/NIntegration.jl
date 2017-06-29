@@ -62,10 +62,19 @@ let f = (x, y, z) -> x * sin(2y) * cos(3z)
 
     (I, E, n, R) = nintegrate(f, xmin, xmax)
     @test I == nintegrate(f, R)
+    @test length(R) == 1
 
     W = weightedpoints(R)
     @test I ≈ nintegrate(f, W)
 
     W = weightedpoints(NIntegration.idem, R)
     @test I ≈ nintegrate(f, W)
+
+    p = [0.5, 0.5, 0.5]
+    io = IOBuffer()
+    show(io, R)
+    @test String(take!(io)) == "1 subregion"
+    show(io, R[1])
+    @test String(take!(io)) == string("(", p, ", ", p, ")")
+
 end
