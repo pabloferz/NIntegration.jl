@@ -1,4 +1,4 @@
-"""    nintegrate(f, xmin::NTuple{N}, xmax::NTuple{N};
+"""    nintegrate(f, xmin::NTuple{N,Any}, xmax::NTuple{N,Any};
                reltol = 1e-6, abstol = 1e-12,
                maxevals = 1000000)
 
@@ -19,7 +19,7 @@ which the integration domain was subdivided).
 Approximate Calculation of Multiple Integrals," ACM Trans. Math. Soft., 17 (4),
 437-451 (1991).
 """
-function nintegrate{F,N}(f::F, xmin::NTuple{N}, xmax::NTuple{N};
+function nintegrate{F,N}(f::F, xmin::NTuple{N,Any}, xmax::NTuple{N,Any};
                          reltol::Float64 = 1e-6, abstol::Float64 = eps(),
                          maxevals::Int = 1000000)
     # find the center and half-widths of the whole integration domain
