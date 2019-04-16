@@ -77,6 +77,7 @@ The integration algorithm is based on the one decribed in:
 The author expresses his gratitude to [Professor Alan
 Genz](http://www.math.wsu.edu/faculty/genz/homepage) for some useful pointers.
 
+This work was financially supported by CONACYT through grant 354884.
 
 
 [//]: # (Links)
