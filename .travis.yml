@@ -1,20 +1,19 @@
 # Documentation: http://docs.travis-ci.com/user/languages/julia/
 language: julia
+notifications:
+  email: false
+julia:
+  - 1.0
+  - 1.5
+  - nightly
 os:
   - linux
   - osx
-julia:
-  - 0.5
-  - 0.6
-#  - nightly
-notifications:
-  email: false
-# uncomment the following lines to override the default test script
-#script:
-#  - if [[ -a .git/shallow ]]; then git fetch --unshallow; fi
-#  - julia -e 'Pkg.clone(pwd()); Pkg.build("NIntegration"); Pkg.test("NIntegration"; coverage=true)'
-after_success:
-  # push coverage results to Coveralls
-  - julia -e 'cd(Pkg.dir("NIntegration")); Pkg.add("Coverage"); using Coverage; Coveralls.submit(Coveralls.process_folder())'
-  # push coverage results to Codecov
-  - julia -e 'cd(Pkg.dir("NIntegration")); Pkg.add("Coverage"); using Coverage; Codecov.submit(Codecov.process_folder())'
+  - windows
+cache:
+  directories:
+    - ~/.julia/artifacts
+jobs:
+  fast_finish: true
+  allow_failures:
+    - julia: nightly

@@ -9,8 +9,8 @@ for N = 1:4
         return typeof(p₀[1] * Base.Cartesian.@ncall($N, f, x))
     end
 
-    # Equivalent to `eval(f, wp) = wp.w * f(wp.p...)`, but faster
-    @eval function eval{F,T}(f::F, v::SVector{$N,T})
+    # Equivalent to `evaluate(f, wp) = wp.w * f(wp.p...)`, but faster
+    @eval function evaluate{F,T}(f::F, v::SVector{$N,T})
         Base.Cartesian.@nexprs $N d->(x_d = v[d])
         return Base.Cartesian.@ncall($N, f, x)
     end

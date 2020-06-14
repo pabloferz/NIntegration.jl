@@ -17,9 +17,11 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3,T})
     p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
     p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-    fuα₁ = ( f(p[1], x₂, x₃) + f(p[2], x₂, x₃) ,
-             f(x₁, p[3], x₃) + f(x₁, p[4], x₃) ,
-             f(x₁, x₂, p[5]) + f(x₁, x₂, p[6]) )
+    fuα₁ = (
+        f(p[1], x₂, x₃) + f(p[2], x₂, x₃),
+        f(x₁, p[3], x₃) + f(x₁, p[4], x₃),
+        f(x₁, x₂, p[5]) + f(x₁, x₂, p[6])
+    )
 
     s = fuα₁[1] + fuα₁[2] + fuα₁[3]
 
@@ -36,9 +38,11 @@ function _apply_rule{F,T,R}(f::F, r::Region{3,T,R}, p::MMatrix{2,3,T})
     p[1], p[3], p[5] = x₁ + uh₁, x₂ + uh₂, x₃ + uh₃
     p[2], p[4], p[6] = x₁ - uh₁, x₂ - uh₂, x₃ - uh₃
 
-    fuα₂ = ( f(p[1], x₂, x₃) + f(p[2], x₂, x₃) ,
-             f(x₁, p[3], x₃) + f(x₁, p[4], x₃) ,
-             f(x₁, x₂, p[5]) + f(x₁, x₂, p[6]) )
+    fuα₂ = (
+        f(p[1], x₂, x₃) + f(p[2], x₂, x₃),
+        f(x₁, p[3], x₃) + f(x₁, p[4], x₃),
+        f(x₁, x₂, p[5]) + f(x₁, x₂, p[6])
+    )
 
     s = fuα₂[1] + fuα₂[2] + fuα₂[3]
 

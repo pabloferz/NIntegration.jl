@@ -83,9 +83,9 @@ function nintegrate{F,N,T}(f::F, wp::WPoints{N,T})
 
     isempty(w) && throw(ArgumentError("W must contain at least one element"))
 
-    I = w[1] * eval(f, p[1])
+    I = w[1] * evaluate(f, p[1])
     @inbounds @simd for i = 2:length(w)
-        I += w[i] * eval(f, p[i])
+        I += w[i] * evaluate(f, p[i])
     end
 
     return I
