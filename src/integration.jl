@@ -34,7 +34,7 @@ function nintegrate(
     # and initiate the regions heap
     _p = zeros(MMatrix{2,N,T})
     I, E = apply_rule!(f, r, _p)
-    regions = binary_maxheap(typeof(r))
+    regions = BinaryMaxHeap{typeof(r)}()
     push!(regions, r)
     evals = L = L₁₁
 
