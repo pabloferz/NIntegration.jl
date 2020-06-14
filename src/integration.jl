@@ -146,9 +146,9 @@ function choose_axis(h, fu, fuα₁, fuα₂)
     Df₃ = chop(abs(fuα₁[3] - r * fuα₂[3] - fc))
 
     if Df₁ == Df₂ == Df₃
-        return indmax(h)
+        return argmax(h)
     else
-        return indmax((Df₁, Df₂, Df₃))
+        return argmax((Df₁, Df₂, Df₃))
     end
 end
 
