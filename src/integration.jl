@@ -19,9 +19,10 @@ which the integration domain was subdivided).
 Approximate Calculation of Multiple Integrals," ACM Trans. Math. Soft., 17 (4),
 437-451 (1991).
 """
-function nintegrate{F,N}(f::F, xmin::NTuple{N,Any}, xmax::NTuple{N,Any};
-                         reltol::Float64 = 1e-6, abstol::Float64 = eps(),
-                         maxevals::Int = 1000000)
+function nintegrate(
+    f::F, xmin::NTuple{N,Any}, xmax::NTuple{N,Any};
+    reltol::Float64 = 1e-6, abstol::Float64 = eps(), maxevals::Int = 1000000
+) where {F,N}
     # find the center and half-widths of the whole integration domain
     tx = map((a, b) -> (a + b) / 2, xmin, xmax)
     th = map((a, b) -> (b - a) / 2, xmin, xmax)
@@ -61,8 +62,8 @@ end
 Approximate numerical integration routine that takes the integrand `f` and a
 `Regions` object which is a subdivision of the integration domain.
 """
-nintegrate{F}(f::F, regions::Regions) = nintegrate(f, regions.v)
-function nintegrate{F,N,R,T}(f::F, regions::Vector{Region{N,T,R}})
+nintegrate(f::F, regions::Regions) = nintegrate(f, regions.v) where {F}
+function nintegrate(f::F, regions::Vector{Region{N,T,R}}) where {F,N,R,T}
     _p = zeros(MMatrix{2,N,T})
     I  = zero(R)
     for r in regions
@@ -105,8 +106,8 @@ It works the same as `weightedpoints(::Regions)`, but allows a transformation
 `f` that takes a weight and a tuple `x` of point coordinates f(w, p) and
 returns a `WPoints`.
 """
-weightedpoints{F}(f::F, regions::Regions) = weightedpoints(f, regions.v)
-function weightedpoints{F,N,R,T}(f::F, regions::Vector{Region{N,T,R}})
+weightedpoints(f::F, regions::Regions) = weightedpoints(f, regions.v) where {F}
+function weightedpoints(f::F, regions::Vector{Region{N,T,R}}) where {F,N,R,T}
     _p = zeros(MMatrix{2,N,T})
     w = Vector{R}()
     p = Vector{SVector{N,T}}()
@@ -127,7 +128,7 @@ function divide(r::Region)
     return r₁, r₂
 end
 
-function apply_rule!{F}(f::F, r::Region, P)
+function apply_rule!(f::F, r::Region, P) where {F}
     I, N₁, N₂, N₃, N₄, fu, fuα₁, fuα₂ = _apply_rule(f, r, P)
     r.axis.x = choose_axis(r.h, fu, fuα₁, fuα₂)
     E = compute_error(N₁, N₂, N₃, N₄)

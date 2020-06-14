@@ -2,17 +2,15 @@
 #   Programming utilities   #
 #############################
 
-function integral_type
-
 for N = 1:4
     # Equivalent to `integral_type(f, x) = typeof(p₀[1] * f(x...)` but inferrable
-    @eval function integral_type{T}(f, x::NTuple{$N,T})
+    @eval function integral_type(f, x::NTuple{$N,T}) where {T}
         Base.Cartesian.@nexprs $N d->(x_d = x[d])
         return typeof(p₀[1] * Base.Cartesian.@ncall($N, f, x))
     end
 
     # Equivalent to `evaluate(f, wp) = wp.w * f(wp.p...)`, but faster
-    @eval function evaluate{F,T}(f::F, v::SVector{$N,T})
+    @eval function evaluate(f::F, v::SVector{$N,T}) where {T}
         Base.Cartesian.@nexprs $N d->(x_d = v[d])
         return Base.Cartesian.@ncall($N, f, x)
     end
@@ -31,7 +29,7 @@ points(wp::WPoints) = wp.p
 Base.length(r::Regions) = length(r.v)
 Base.getindex(r::Regions, i::Int) = r.v[i]
 
-function Base.push!{N,T,R}(wp::WPoints{N,T,R}, t::Tuple{R,SVector{N,T}})
+function Base.push!(wp::WPoints{N,T,R}, t::Tuple{R,SVector{N,T}}) where {N,T,R}
     push!(wp.w, t[1])
     push!(wp.p, t[2])
 end
@@ -40,10 +38,10 @@ end
 #   Math utilities   #
 ######################
 
-chop{T}(x::T) = ifelse(x < eps(T), zero(T), x)
+chop(x::T) where {T} = ifelse(x < eps(T), zero(T), x)
 
-Base.isless{N}(r₁::Region{N}, r₂::Region{N}) = isless(r₁.E.x, r₂.E.x)
-Base.isequal{N}(r₁::Region{N}, r₂::Region{N}) = isequal(r₁.E.x, r₂.E.x)
+Base.isless(r₁::Region{N}, r₂::Region{N}) where {N} = isless(r₁.E.x, r₂.E.x)
+Base.isequal(r₁::Region{N}, r₂::Region{N}) where {N} = isequal(r₁.E.x, r₂.E.x)
 
 ####################
 #   IO utilities   #
