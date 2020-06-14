@@ -3,7 +3,7 @@
 ### Test suite for NIntegration.jl
 
 using NIntegration
-using Base.Test
+using Test
 
 ### Tests
 
