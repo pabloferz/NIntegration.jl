@@ -10,7 +10,7 @@ for N = 1:4
     end
 
     # Equivalent to `evaluate(f, wp) = wp.w * f(wp.p...)`, but faster
-    @eval function evaluate(f::F, v::SVector{$N,T}) where {T}
+    @eval function evaluate(f::F, v::SVector{$N,T}) where {F, T}
         Base.Cartesian.@nexprs $N d->(x_d = v[d])
         return Base.Cartesian.@ncall($N, f, x)
     end

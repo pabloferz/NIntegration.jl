@@ -62,7 +62,7 @@ end
 Approximate numerical integration routine that takes the integrand `f` and a
 `Regions` object which is a subdivision of the integration domain.
 """
-nintegrate(f::F, regions::Regions) = nintegrate(f, regions.v) where {F}
+nintegrate(f::F, regions::Regions) where {F} = nintegrate(f, regions.v)
 function nintegrate(f::F, regions::Vector{Region{N,T,R}}) where {F,N,R,T}
     _p = zeros(MMatrix{2,N,T})
     I  = zero(R)
@@ -78,7 +78,7 @@ Approximate numerical integration routine that takes the integrand `f` and a
 `WPoints` object (set of  weights and nodes on integration domain). A `WPoints`
 can be obtained from a `Regions` object `R` by calling `weightedpoints(R)`.
 """
-function nintegrate{F,N,T}(f::F, wp::WPoints{N,T})
+function nintegrate(f::F, wp::WPoints{N,T}) where {F,N,T}
     w = weights(wp)
     p = points(wp)
 
@@ -106,7 +106,7 @@ It works the same as `weightedpoints(::Regions)`, but allows a transformation
 `f` that takes a weight and a tuple `x` of point coordinates f(w, p) and
 returns a `WPoints`.
 """
-weightedpoints(f::F, regions::Regions) = weightedpoints(f, regions.v) where {F}
+weightedpoints(f::F, regions::Regions) where {F} = weightedpoints(f, regions.v)
 function weightedpoints(f::F, regions::Vector{Region{N,T,R}}) where {F,N,R,T}
     _p = zeros(MMatrix{2,N,T})
     w = Vector{R}()
