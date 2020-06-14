@@ -2,6 +2,8 @@
 #   Programming utilities   #
 #############################
 
+function integral_type
+
 for N = 1:4
     # Equivalent to `integral_type(f, x) = typeof(p₀[1] * f(x...)` but inferrable
     @eval function integral_type{T}(f, x::NTuple{$N,T})
