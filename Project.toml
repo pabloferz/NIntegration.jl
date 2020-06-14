@@ -1,7 +1,7 @@
 name = "NIntegration"
 uuid = "6bc19e23-bab2-46bf-83a3-676491d8c0d1"
 author = ["Pablo Zubieta"]
-version = 0.1.0
+version = "0.1.0"
 
 [compat]
 julia = "1"
